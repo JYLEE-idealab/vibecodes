@@ -603,5 +603,5 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install_windows.ps1
 
 ## 📄 라이선스
 
-All project is licensed under the MIT License.
+All projects are licensed under the MIT License.
 
