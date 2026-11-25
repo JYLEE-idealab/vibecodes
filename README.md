@@ -1,3 +1,6 @@
+<div align="center">
+
+
 # 1st project 📡 SecureLiveBroadcaster
 
 <p align="center">
@@ -7,6 +10,8 @@
   <img src="https://img.shields.io/badge/Video-1080p%205Mbps%20H.264-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
 </p>
+
+</div>
 
 <p align="center">
   <strong>외장 액션캠(DJI 오즈모 액션 5 / UVC) 및 내장 카메라를 활용한 초저지연(Sub-second) SRT 라이브 스트리밍 안드로이드 솔루션</strong>
@@ -137,6 +142,8 @@ cd android
 
 ---
 
+<div align="center">
+
 # 2nd project 🕺 Idol Choreography Synchronization Analyzer (`idol-choreo-sync`)
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
@@ -144,6 +151,9 @@ cd android
 ![ByteTrack](https://img.shields.io/badge/Multi--Object_Tracking-ByteTrack-38EF7D)
 ![OpenCV](https://img.shields.io/badge/OpenCV-Video_Synthesis-5C3EE8?logo=opencv&logoColor=white)
 ![Gradio](https://img.shields.io/badge/Web_UI-Gradio-FF7C00)
+
+</div>
+
 
 **아이돌 그룹의 안무 연습 영상(Dance Practice)이나 직캠(Full Cam)을 넣으면, 다중 인물을 실시간 트래킹하여 멤버 간 안무 일치율(칼군무 싱크로율)을 계산하고 원본 동영상(오디오 포함) 위에 실시간 HUD 그래픽을 합성해 주는 AI 프로그램**입니다.
 
@@ -207,12 +217,17 @@ idol-choreo-sync/
 
 ---
 
+<div align="center">
+
 # 3rd project 🚴 AI Bike Fitting Studio (`ai-bike-fitter`)
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![YOLOv8-Pose](https://img.shields.io/badge/YOLOv8--Pose-Biomechanics-00D2FF)
 ![OpenCV](https://img.shields.io/badge/OpenCV-Marker_Snap_%26_HUD-38EF7D?logo=opencv&logoColor=white)
 ![Gradio](https://img.shields.io/badge/Web_UI-Live_Webcam_%26_MP4-FF7C00)
+
+</div>
+
 
 **인도어 트레이너(로라)에 자전거를 고정하고 측면 또는 정면에서 촬영한 동영상(또는 실시간 웹캠)을 입력하면, 라이더의 5대 핵심 피팅 관절 각도를 실시간 추적하여 `Crank At 6 O'Clock` 바이오메카닉 폴리곤과 5단계 색깔별 기준 게이지(`빨-노-초-노-빨`)를 원본 동영상 위에 그대로 합성(`.MP4`)해 주는 AI 자전거 피팅 프로그램**입니다.
 
@@ -290,7 +305,11 @@ ai-bike-fitter/
 
 ---
 
+<div align="center">
+
 # 4th project 🖥️ TabMonitor Studio
+
+</div>
 
 **TabMonitor Studio**는 Windows PC와 Android 태블릿(Galaxy Tab 등)을 USB 케이블로 연결하여 **초저지연(60fps, NVIDIA NVENC 하드웨어 가속) 16:9 보조 모니터 및 터치스크린**으로 활용할 수 있게 해주는 오픈소스 프로젝트입니다.
 
@@ -390,11 +409,15 @@ This project is licensed under the MIT License.
 
 ---
 
+<div align="center">
+
 # 5th project 🎙️ OBS SRT Stream Live STT Subtitle Plugin
 
 ![Python 3.11](https://img.shields.io/badge/Python-3.8~3.11-blue?logo=python)
 ![OBS Studio](https://img.shields.io/badge/OBS_Studio-28+-302E31?logo=obsstudio)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+
+</div>
 
 외부 프로그램이나 가상 오디오 케이블(Virtual Audio Cable)을 따로 실행할 필요 없이, **OBS Studio 내부에서만 100% 동작**하는 실시간 AI 자막(STT) 생성 스크립트 플러그인입니다.
 
