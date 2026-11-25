@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="#000000">
+
+    <!-- 프리뷰 화면 (전체 배경, OpenGL 렌더링) -->
+    <com.pedro.library.view.OpenGlView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true" />
+
+    <!-- 카메라 화면 모니터링(프리뷰) OFF 시 절전 블랙 스크린 커버 (SRT 송출은 백그라운드에서 100% 정상 작동) -->
+    <FrameLayout
+        android:id="@+id/layoutCameraPreviewCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📷 카메라 화면 모니터링 OFF"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="OLED 화면 절전 모드 작동 중\n(SRT 1080p 고화질 송출은 정상 유지됩니다)"
+                android:textColor="#81D4FA"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#33FFFFFF"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="화면을 터치하거나 우측 하단 [👁️] 버튼으로 모니터링 켜기"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 좌측 상단: 메뉴 열기/닫기 토글 버튼 -->
+    <Button
+        android:id="@+id/btnToggleMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:text="✕ 메뉴 닫기"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#CC37474F"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="12dp"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="0dp" />
+
+    <!-- 좌측 상단: SRT + OBS + 치지직 설정 패널 (메뉴 버튼으로 표시/숨김 토글) -->
+    <ScrollView
+        android:id="@+id/configPanel"
+        android:layout_width="320dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/btnToggleMenu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#DD000000"
+            android:padding="14dp">
+
+            <!-- 메뉴 헤더 및 닫기 버튼 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="⚙️ 제어 메뉴"
+                    android:textColor="#81D4FA"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnCloseMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="✕ 닫기"
+                    android:textSize="11sp"
+                    android:backgroundTint="#455A64"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="0dp" />
+            </LinearLayout>
+
+            <!-- ── SRT 설정 ── -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="■ SRT 송출 설정" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="13sp" android:layout_marginBottom="4dp"/>
+
+            <EditText android:id="@+id/etServerIp"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="URL (srt://ip:port)" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="textUri" android:background="#33FFFFFF" android:padding="8dp"/>
+
+            <EditText android:id="@+id/etStreamId"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="Stream ID (선택)" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="text" android:background="#33FFFFFF" android:padding="8dp"
+                android:layout_marginTop="4dp"/>
+
+            <EditText android:id="@+id/etPassphrase"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="AES 암호 (10자 이상, 선택)" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="textPassword" android:background="#33FFFFFF" android:padding="8dp"
+                android:layout_marginTop="4dp"/>
+
+            <Button android:id="@+id/btnSaveConfig"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:text="SRT 설정 저장" android:textSize="12sp"
+                android:backgroundTint="#1565C0" android:layout_marginTop="6dp"/>
+
+            <!-- ── 오디오 라우팅 ── -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="■ 오디오 모드" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="13sp" android:layout_marginTop="12dp" android:layout_marginBottom="4dp"/>
+
+            <RadioGroup android:id="@+id/rgAudioMode"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton android:id="@+id/rbBluetooth"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🎧 블루투스 이어폰" android:textColor="#FFFFFF" android:textSize="13sp"
+                    android:buttonTint="#64B5F6"/>
+
+                <RadioButton android:id="@+id/rbPhone"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="📱 폰 내장 마이크/스피커" android:textColor="#FFFFFF" android:textSize="13sp"
+                    android:buttonTint="#64B5F6" android:checked="true"/>
+
+                <RadioButton android:id="@+id/rbUvcWired"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🎥 UVC 캠 유선 (오즈모 5)" android:textColor="#FFFFFF" android:textSize="13sp"
+                    android:buttonTint="#64B5F6"/>
+            </RadioGroup>
+
+            <!-- ── OBS WebSocket ── -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="■ OBS WebSocket" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="13sp" android:layout_marginTop="12dp" android:layout_marginBottom="4dp"/>
+
+            <EditText android:id="@+id/etObsHost"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="OBS PC IP (Tailscale)" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="textUri" android:background="#33FFFFFF" android:padding="8dp"/>
+
+            <EditText android:id="@+id/etObsPort"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="포트 (기본: 4455)" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="number" android:background="#33FFFFFF" android:padding="8dp"
+                android:layout_marginTop="4dp" android:text="4455"/>
+
+            <EditText android:id="@+id/etObsPassword"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="OBS WebSocket 비밀번호" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="textPassword" android:background="#33FFFFFF" android:padding="8dp"
+                android:layout_marginTop="4dp"/>
+
+            <Button android:id="@+id/btnSaveObsConfig"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:text="OBS 설정 저장" android:textSize="12sp"
+                android:backgroundTint="#00838F" android:layout_marginTop="6dp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginTop="6dp">
+
+                <Button android:id="@+id/btnObsConnect"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="OBS 연결" android:textSize="12sp" android:backgroundTint="#37474F"/>
+
+                <Button android:id="@+id/btnObsStartStream"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="OBS 방송시작" android:textSize="11sp" android:backgroundTint="#2E7D32"
+                    android:layout_marginStart="4dp"/>
+
+                <Button android:id="@+id/btnObsStopStream"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="OBS 방송종료" android:textSize="11sp" android:backgroundTint="#B71C1C"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <TextView android:id="@+id/tvObsStatus"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="OBS: 미연결" android:textColor="#FFCC00" android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView android:id="@+id/tvObsStreamDuration"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="치지직 방송 시간: 대기 중 (00:00:00)" android:textColor="#81D4FA" android:textSize="12sp"
+                android:layout_marginTop="2dp"/>
+
+            <!-- ── OBS 송출 모니터 (PiP) 토글 ── -->
+            <Button android:id="@+id/btnToggleProgramMonitor"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:text="📺 송출 화면 모니터 (OFF)" android:textSize="12sp"
+                android:backgroundTint="#0277BD" android:layout_marginTop="6dp"/>
+
+            <!-- ── OBS 장면 및 소스 제어 (연결 시 활성화) ── -->
+            <LinearLayout android:id="@+id/layoutObsSceneControl"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:visibility="gone"
+                android:layout_marginTop="6dp" android:background="#44000000" android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🎬 OBS 장면 (Scene)" android:textColor="#81D4FA"
+                    android:textStyle="bold" android:textSize="12sp"/>
+
+                <Spinner android:id="@+id/spObsScenes"
+                    android:layout_width="match_parent" android:layout_height="36dp"
+                    android:background="#33FFFFFF" android:layout_marginTop="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="👁️ 소스 제어 (터치하여 On/Off)" android:textColor="#81D4FA"
+                    android:textStyle="bold" android:textSize="12sp" android:layout_marginTop="8dp"/>
+
+                <!-- 소스 아이템들이 동적으로 추가되는 컨테이너 -->
+                <LinearLayout android:id="@+id/layoutObsSourceItems"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- ── 치지직 채팅 TTS ── -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="■ 치지직 채팅 TTS" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="13sp" android:layout_marginTop="12dp" android:layout_marginBottom="4dp"/>
+
+            <EditText android:id="@+id/etChzzkChannelId"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="치지직 채널 ID 또는 채널명" android:textColor="#FFFFFF"
+                android:textColorHint="#999999" android:textSize="13sp"
+                android:inputType="text" android:background="#33FFFFFF" android:padding="8dp"/>
+
+            <Button android:id="@+id/btnSaveChzzkConfig"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:text="치지직 설정 저장" android:textSize="12sp"
+                android:backgroundTint="#4A148C" android:layout_marginTop="6dp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginTop="6dp">
+
+                <Button android:id="@+id/btnChzzkConnect"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="채팅 연결" android:textSize="12sp" android:backgroundTint="#6A1B9A"/>
+
+                <Button android:id="@+id/btnChzzkDisconnect"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="채팅 종료" android:textSize="12sp" android:backgroundTint="#37474F"
+                    android:layout_marginStart="4dp"/>
+
+                <Button android:id="@+id/btnTtsTest"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="소리 테스트" android:textSize="11sp" android:backgroundTint="#00897B"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <TextView android:id="@+id/tvChatStatus"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="채팅: 미연결" android:textColor="#FFCC00" android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+
+            <!-- ── 치지직 방송 관리 & 네이버 계정 연동 ── -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="■ 치지직 방송 관리 (제목/정보)" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="13sp" android:layout_marginTop="14dp" android:layout_marginBottom="4dp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <TextView android:id="@+id/tvNaverAccountStatus"
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:text="네이버: 미연동" android:textColor="#AAAAAA" android:textSize="12sp"/>
+                <Button android:id="@+id/btnNaverLogin"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="네이버 로그인" android:textSize="11sp"
+                    android:backgroundTint="#03C75A" android:textColor="#FFFFFF"
+                    android:paddingHorizontal="10dp" android:paddingVertical="0dp"/>
+                <Button android:id="@+id/btnNaverLogout"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="로그아웃" android:textSize="11sp"
+                    android:backgroundTint="#555555" android:textColor="#FFFFFF"
+                    android:paddingHorizontal="8dp" android:paddingVertical="0dp"
+                    android:layout_marginStart="4dp" android:visibility="gone"/>
+            </LinearLayout>
+
+            <!-- 방송 정보 변경 패널 (로그인 시 활성화) -->
+            <LinearLayout android:id="@+id/layoutLiveSettingPanel"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginTop="8dp"
+                android:background="#33000000" android:padding="8dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="방송 제목 (실시간 변경)" android:textColor="#81D4FA" android:textSize="11sp"/>
+                <EditText android:id="@+id/etLiveTitle"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:hint="치지직 방송 제목 입력" android:textColor="#FFFFFF"
+                    android:textColorHint="#888888" android:textSize="12sp"
+                    android:background="#33FFFFFF" android:padding="6dp" android:layout_marginTop="2dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="태그 (쉼표로 구분)" android:textColor="#81D4FA" android:textSize="11sp"
+                    android:layout_marginTop="6dp"/>
+                <EditText android:id="@+id/etLiveTags"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:hint="예: 소통, 야외방송, 토크" android:textColor="#FFFFFF"
+                    android:textColorHint="#888888" android:textSize="12sp"
+                    android:background="#33FFFFFF" android:padding="6dp" android:layout_marginTop="2dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <Button android:id="@+id/btnRefreshLiveSetting"
+                        android:layout_width="0dp" android:layout_height="34dp" android:layout_weight="1"
+                        android:text="새로고침" android:textSize="11sp"
+                        android:backgroundTint="#37474F"/>
+                    <Button android:id="@+id/btnApplyLiveSetting"
+                        android:layout_width="0dp" android:layout_height="34dp" android:layout_weight="2"
+                        android:text="방송 정보 적용" android:textSize="11sp"
+                        android:backgroundTint="#00C853" android:textColor="#FFFFFF"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 상단 중앙: 치지직 송출 시간 실시간 타이머 배지 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardChzzkLiveTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#CC111111"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp">
+
+            <TextView
+                android:id="@+id/tvChzzkLiveDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚪"
+                android:textSize="10sp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tvChzzkLiveTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="치지직: 대기 중"
+                android:textColor="#CCCCCC"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 우측 상단: OBS 최종 송출 화면(Program) 미니 모니터 (PiP) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardProgramMonitor"
+        android:layout_width="192dp"
+        android:layout_height="108dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="#000000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="12dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivProgramMonitor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:background="#111111"
+                android:contentDescription="OBS 송출 화면" />
+
+            <TextView
+                android:id="@+id/tvMonitorBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="4dp"
+                android:background="#CC000000"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="2dp"
+                android:text="🔴 OBS LIVE"
+                android:textColor="#00E676"
+                android:textSize="9sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnCloseMonitor"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="3dp"
+                android:background="#AA000000"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="#FFFFFF"
+                android:contentDescription="모니터 닫기" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 우측 하단: 컨트롤 버튼 그룹 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <Button android:id="@+id/btnToggleMode"
+                android:layout_width="wrap_content" android:layout_height="44dp"
+                android:text="내장 카메라" android:textSize="13sp"
+                android:backgroundTint="#455A64" android:layout_marginEnd="8dp"/>
+
+            <Button android:id="@+id/btnFlipCamera"
+                android:layout_width="44dp" android:layout_height="44dp"
+                android:text="🔄" android:textSize="16sp"
+                android:backgroundTint="#37474F" android:layout_marginEnd="8dp"
+                android:padding="0dp"/>
+
+            <Button android:id="@+id/btnTogglePreviewMonitor"
+                android:layout_width="wrap_content" android:layout_height="44dp"
+                android:text="👁️ 화면 ON" android:textSize="12sp"
+                android:backgroundTint="#2E7D32" android:layout_marginEnd="8dp"
+                android:paddingHorizontal="10dp"/>
+
+            <Button android:id="@+id/btnTouchLock"
+                android:layout_width="44dp" android:layout_height="44dp"
+                android:text="🔒" android:textSize="18sp"
+                android:backgroundTint="#37474F" android:padding="0dp"/>
+        </LinearLayout>
+
+        <Button android:id="@+id/btnStream"
+            android:layout_width="200dp" android:layout_height="56dp"
+            android:text="방송 시작" android:textSize="18sp" android:textStyle="bold"
+            android:backgroundTint="#D32F2F"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
