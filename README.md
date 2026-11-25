@@ -135,10 +135,6 @@ cd android
 * **제2회 인공지능 활용 우수사례 공모전** 출품작
 * 생성형 AI(Google DeepMind Antigravity)와의 심층 페어 프로그래밍을 통해 시스템 레벨(NDK, 하드웨어 코덱, 저지연 네트워크 프로토콜)의 기술적 난제를 단기간에 극복한 융합 개발 사례
 
----
-
-## 📄 라이선스 (License)
-본 프로젝트는 [MIT License](LICENSE)를 따릅니다.
 
 ---
 
@@ -401,14 +397,6 @@ pythonw app_gui.py
 
 ---
 
-## 📄 라이선스
-
-This project is licensed under the MIT License.
-
-
-
----
-
 <div align="center">
 
 # 5th project 🎙️ OBS SRT Stream Live STT Subtitle Plugin
@@ -500,11 +488,6 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe -m pip in
 
 ---
 
-## 📜 라이선스
-
-이 프로젝트는 [MIT License](./LICENSE)에 따라 배포됩니다.
-
----
 
 <div align="center">
 
@@ -606,5 +589,5 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install_windows.ps1
 
 ## 📄 라이선스
 
-This project is licensed under the MIT License.
+All project is licensed under the MIT License.
 
