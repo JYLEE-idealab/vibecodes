@@ -1,5 +1,19 @@
 <div align="center">
 
+들어가기에 앞서..
+
+이 프로젝트들은 전부 'google antigravity'를 사용하여 코딩되었음을 명시하며. 
+
+개인 사용목적의 개발 완료 혹은 개발 진행 중인 프로젝트를 포함하고 있습니다.
+
+※ AI의 힘을 빌려 아이디어를 구현 후 실사용까지의 과정에 의의를 두고 있습니다. ※ 
+
+</div>
+
+---
+
+<div align="center">
+
 
 # 1st project 📡 SecureLiveBroadcaster
 
