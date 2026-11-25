@@ -504,7 +504,7 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe -m pip in
 
 <br>
 
-**Backup Explorer**는 내 PC(M.2 SSD)와 외장하드(USB HDD 등)에 흩어져 있는 파일들을 **폴더 구조나 파일명에 상관없이 실제 내용(BLAKE3 해시) 기반으로 초고속 비교**하여, 미백업 파일 확인부터 중복 파일 안전 정리까지 한 번에 해결해 주는 Rust 기반 Windows 파일 탐색기 스타일 오픈소스 데스크톱 앱입니다.
+**Backup Explorer**는 PC의 m.2 SSD 와 외장하드에 흩어져 있는 파일들을 **폴더 구조나 파일명에 상관없이 실제 내용(BLAKE3 해시) 기반으로 초고속 비교**하여, 미백업 파일 확인부터 중복 파일 안전 정리까지 한 번에 해결해 주는 Rust 기반 Windows 파일 탐색기 스타일 오픈소스 데스크톱 앱입니다.
 
 ---
 
