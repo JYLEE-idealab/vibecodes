@@ -485,7 +485,7 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe -m pip in
 
 <div align="center">
 
-# 📂 Backup Explorer
+# 6th project 📂 Backup Explorer (개발진행중)
 
 ![Platform](https://img.shields.io/badge/PLATFORM-WINDOWS%2010%20%2F%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![Language](https://img.shields.io/badge/LANGUAGE-RUST-CE422B?style=for-the-badge&logo=rust&logoColor=white)
