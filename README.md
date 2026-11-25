@@ -35,9 +35,9 @@
 
 ## 💡 프로젝트 소개
 
-**SecureLiveBroadcaster**는 야외 1인 방송인을 위해 수백만 원대의 전용 방송 장비(LiveU 등) 없이, **스마트폰과 액션캠 1대만으로 스튜디오급 고화질 생방송을 송출**할 수 있도록 설계된 오픈소스 라이브 스트리밍 앱입니다.
+**SecureLiveBroadcaster**는 안정적인 야외 방송을 위해 수백만 원대의 전용 방송 장비(LiveU 등) 없이, **스마트폰과 액션캠 1대만으로 스튜디오급 고화질 생방송을 송출**할 수 있도록 설계된 오픈소스 라이브 스트리밍 앱입니다.
 
-특히 삼성 갤럭시(One UI) 등 국내 주요 기기에서 제조사 HAL 제약으로 인해 USB 웹캠이 인식되지 않던 문제를 **NDK 유저스페이스 UVC 드라이버**로 해결하였으며, OBS Studio 연동 시 발생하는 디코딩 지연과 검은 화면을 방지하기 위해 **MPEG-TS 패킷화 및 H.264 Baseline 인코딩 파이프라인**을 완벽히 구축했습니다.
+특히 삼성 갤럭시(One UI) 등 대한민국에서 제조된 스마트 기기에서 제조사 HAL 제약으로 인해 USB 웹캠이 인식되지 않던 문제를 **NDK 유저스페이스 UVC 드라이버**로 해결하였으며, OBS Studio 연동 시 발생하는 디코딩 지연과 검은 화면을 방지하기 위해 **MPEG-TS 패킷화 및 H.264 Baseline 인코딩 파이프라인**을 완벽히 구축했습니다.
 
 ---
 
@@ -165,7 +165,7 @@ cd android
 </div>
 
 
-**아이돌 그룹의 안무 연습 영상(Dance Practice)이나 직캠(Full Cam)을 넣으면, 다중 인물을 실시간 트래킹하여 멤버 간 안무 일치율(칼군무 싱크로율)을 계산하고 원본 동영상(오디오 포함) 위에 실시간 HUD 그래픽을 합성해 주는 AI 프로그램**입니다.
+**아이돌 그룹의 안무 영상이나 직캠(Full Cam)을 넣으면, 다중 인물을 실시간 트래킹하여 멤버 간 안무 일치율(칼군무 싱크로율)을 계산하고 원본 동영상(오디오 포함) 위에 실시간 HUD 그래픽을 합성해 주는 AI 프로그램**입니다.
 
 ---
 
@@ -229,7 +229,7 @@ idol-choreo-sync/
 
 <div align="center">
 
-# 3rd project 🚴 AI Bike Fitting Studio (`ai-bike-fitter`)
+# 3rd project 🚴 AI Bike Fitting Studio (`ai-bike-fitter`) - (개발진행중)
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![YOLOv8-Pose](https://img.shields.io/badge/YOLOv8--Pose-Biomechanics-00D2FF)
@@ -239,7 +239,7 @@ idol-choreo-sync/
 </div>
 
 
-**인도어 트레이너(로라)에 자전거를 고정하고 측면 또는 정면에서 촬영한 동영상(또는 실시간 웹캠)을 입력하면, 라이더의 5대 핵심 피팅 관절 각도를 실시간 추적하여 `Crank At 6 O'Clock` 바이오메카닉 폴리곤과 5단계 색깔별 기준 게이지(`빨-노-초-노-빨`)를 원본 동영상 위에 그대로 합성(`.MP4`)해 주는 AI 자전거 피팅 프로그램**입니다.
+**인도어 트레이너에 자전거를 고정하고 측면 또는 정면에서 촬영한 동영상(또는 실시간 웹캠)을 입력하면, 라이더의 5대 핵심 피팅 관절 각도를 실시간 추적하여 `Crank At 6 O'Clock` 바이오메카닉 폴리곤과 5단계 색깔별 기준 게이지(`빨-노-초-노-빨`)를 원본 동영상 위에 그대로 합성(`.MP4`)해 주는 AI 자전거 피팅 프로그램**입니다.
 
 ---
 
@@ -251,9 +251,9 @@ idol-choreo-sync/
    * 우측 하단에 페달링에 따른 **실시간 무릎 각도 파형 그래프(Live Waveform)**와 초록색 권장 하사점 밴드(`140°~150°`)를 함께 렌더링합니다.
 
 2. **🎯 관절·클릿 슈즈 7곳 원형 컬러 스티커 정밀 스냅 엔진 (`±0.5°` 프로 피팅샵 수준 정밀도)**
-   * 다이소 원형 컬러 스티커(노란색/빨간색/형광연두, 지름 1.5~2.5cm)를 7곳의 관절 회전축 및 클릿 슈즈 발볼 옆면에 부착하고 촬영하면, AI 관절 위치 주변에서 **실제 스티커의 원 중심점(Sub-pixel Centroid)으로 좌표를 자석처럼 고정(Snap)**합니다.
+   * 원형 컬러 스티커(노란색/빨간색/형광연두, 지름 1.5~2.5cm)를 7곳의 관절 회전축 및 클릿 슈즈 발볼 옆면에 부착하고 촬영하면, AI 관절 위치 주변에서 **실제 스티커의 원 중심점(Sub-pixel Centroid)으로 좌표를 자석처럼 고정(Snap)**합니다.
    * 검은색 빕숏 착용 시 발생하는 AI 관절 떨림을 제거하고, 일반 AI가 인식하지 못하는 **클릿 슈즈 페달 중심축(발 각도 `Foot Angle` & `3시 KOPS`)**까지 100% 정밀하게 측정합니다.
-   * 웹앱 화면 내에 **7곳 해부학적 부착 위치 도해 이미지(`sticker_placement_guide.png`) 및 상세 가이드 표**가 기본 내장되어 있습니다.
+   * 웹앱 화면 내에 **7곳 해부학적 스티커 부착 위치 이미지(`sticker_placement_guide.png`) 및 상세 가이드 표**가 기본 내장되어 있습니다.
 
 3. **📹 실시간 웹캠 라이브 피팅 & 자동 오버레이 `.MP4` 녹화 (Tab 2)**
    * **방식 A (브라우저 실시간 스트리밍 녹화):** 웹캠을 켜고 내 자세 위에 입혀진 각도 폴리곤과 컬러 게이지를 실시간 모니터로 확인하면서 `[🔴 실시간 녹화 시작]` ~ `[⏹️ 녹화 종료]`를 누르면 즉시 합성된 `.MP4` 동영상과 리포트가 생성됩니다.
@@ -505,7 +505,7 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe -m pip in
 
 <div align="center">
 
-# 6th project 📂 Backup Explorer (개발진행중)
+# 6th project 📂 Backup Explorer - (개발진행중)
 
 ![Platform](https://img.shields.io/badge/PLATFORM-WINDOWS%2010%20%2F%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![Language](https://img.shields.io/badge/LANGUAGE-RUST-CE422B?style=for-the-badge&logo=rust&logoColor=white)
