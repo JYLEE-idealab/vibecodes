@@ -390,7 +390,7 @@ This project is licensed under the MIT License.
 
 ---
 
-# 4th project 🎙️ OBS SRT Stream Live STT Subtitle Plugin
+# 5th project 🎙️ OBS SRT Stream Live STT Subtitle Plugin
 
 ![Python 3.11](https://img.shields.io/badge/Python-3.8~3.11-blue?logo=python)
 ![OBS Studio](https://img.shields.io/badge/OBS_Studio-28+-302E31?logo=obsstudio)
