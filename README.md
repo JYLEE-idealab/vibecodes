@@ -287,3 +287,101 @@ ai-bike-fitter/
  └── outputs/
       └── sticker_placement_guide.png  # 7곳 원형 스티커 부착 가이드 도해 이미지 및 합성 결과물(.MP4/.PNG) 저장 폴더
 ```
+
+---
+
+# 4th project 🖥️ TabMonitor Studio
+
+**TabMonitor Studio**는 Windows PC와 Android 태블릿(Galaxy Tab 등)을 USB 케이블로 연결하여 **초저지연(60fps, NVIDIA NVENC 하드웨어 가속) 16:9 보조 모니터 및 터치스크린**으로 활용할 수 있게 해주는 오픈소스 프로젝트입니다.
+
+---
+
+## ✨ 주요 기능
+
+- **🚀 초저지연 60fps 하드웨어 스트리밍**
+  - Windows DXGI Desktop Duplication(`dxcam`) 기반 고속 화면 캡처와 NVIDIA `h264_nvenc` 하드웨어 인코더(Ultra-Low Latency, Zero-Latency, B-Frame 0)를 결합하여 지연 시간을 최소화했습니다.
+  - Android 태블릿에서는 하드웨어 `MediaCodec`(`KEY_LOW_LATENCY`)을 통해 프레임을 즉시 디코딩 및 렌더링합니다.
+- **📐 16:9 고정 화면비 & 자동 회전 지원**
+  - 16:10 비율 태블릿에서도 왜곡 없는 정확한 **16:9 화면 비율**을 중앙 정렬로 유지하며, 태블릿을 회전할 때 가로 방향 자동 회전(`sensorLandscape`)에 대응합니다.
+- **⚡ 무중단 실시간 해상도 전환 & 디스플레이 번호 고정**
+  - 스트리밍 작동 중에도 GUI 버튼 클릭 한 번으로 **`1920 × 1080 (FHD 60p)`** ↔ **`1280 × 720 (HD 60p)`** 해상도를 즉시 전환할 수 있습니다.
+  - 드라이버 재로드 없이 Win32 `ChangeDisplaySettingsExW` 인플레이스 전환을 사용하여 Windows 디스플레이 식별자(`\\.\DISPLAYx`)가 바뀌지 않고 고정됩니다.
+- **👆 1:1 터치 ➔ 마우스 입력 & 실시간 커서 렌더링**
+  - 태블릿 화면 터치 및 드래그가 보조 모니터 영역의 Windows 마우스 포인터 이동/클릭(`SendInput` & `SetCursorPos`)으로 1:1 매핑됩니다.
+  - 관리자 권한으로 실행되는 프로그램 위에서도 터치 조작이 막히지 않도록 자동 권한 승격(UIPI 우회)을 지원하며, 보조 모니터 위의 마우스 커서를 실시간으로 화면에 렌더링합니다.
+- **🔄 PC ↔ 태블릿 양방향 자동 실행 및 통일된 스튜디오 UI**
+  - **PC에서 시작**: PC 프로그램에서 `▶ 보조모니터 시작`을 누르면 꺼져 있던 태블릿 화면이 자동으로 켜지고 앱이 실행되어 바로 연결됩니다.
+  - **태블릿에서 시작**: 태블릿을 USB로 연결한 뒤 태블릿 앱에서 `▶ 보조모니터 시작`을 누르면 닫혀 있던 PC 프로그램이 자동으로 켜지며 스트리밍이 시작됩니다.
+  - PC와 태블릿 앱 모두 일관된 다크 테마 대시보드 UI와 독립 팝업 로그 창(`📋 로그 창 열기`)을 제공합니다.
+
+---
+
+## 🛠️ 시스템 요구 사항
+
+- **PC 운영체제**: Windows 10 / 11 (64-bit)
+- **그래픽카드**: NVIDIA GPU (NVENC 하드웨어 인코딩 지원)
+- **Python**: Python 3.10 이상
+- **가상 디스플레이 드라이버**: [Virtual-Display-Driver (MttVDD)](https://github.com/itsmikethetech/Virtual-Display-Driver) (`1920x1080@60Hz`, `1280x720@60Hz` 모드 등록)
+- **Android 기기**: Android 8.0 (API 26) 이상 태블릿 또는 스마트폰 (**USB 디버깅** 활성화 필수)
+
+---
+
+## 📂 프로젝트 구조
+
+```text
+TabMonitor/
+├── app_gui.py          # Windows용 TabMonitor Studio 메인 GUI 및 영상/터치 스트리밍 서버
+├── display_ctl.py      # Windows 가상 디스플레이 해상도 실시간 인플레이스 제어 모듈
+├── usb_watcher.py      # 태블릿 앱 실행 감지 및 PC GUI 자동 실행 백그라운드 데몬
+├── RUN.bat             # 콘솔 창 없이 PC GUI를 바로 실행하는 런처 스크립트
+├── requirements.txt    # Python 필수 패키지 목록
+└── android/            # Android용 TabMonitor Studio 앱 프로젝트 (Gradle)
+    └── app/src/main/
+        ├── AndroidManifest.xml
+        └── java/com/tabmonitor/MainActivity.java
+```
+
+---
+
+## 🚀 설치 및 실행 방법
+
+### 1. Python 패키지 설치
+```bash
+pip install -r requirements.txt
+```
+
+### 2. ADB (Android Platform Tools) 준비
+- [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools)를 다운로드하여 프로젝트 폴더 내 `bin/adb.exe` 경로에 배치합니다.
+- Android 태블릿의 **개발자 옵션 ➔ USB 디버깅**을 켜고 PC와 USB 케이블로 연결합니다.
+
+### 3. 가상 디스플레이 드라이버 설정
+- [Virtual Display Driver (MttVDD)](https://github.com/itsmikethetech/Virtual-Display-Driver)를 설치하고 `C:\VirtualDisplayDriver\vdd_settings.xml`에 `1920x1080@60Hz` 및 `1280x720@60Hz` 해상도를 등록합니다.
+- Windows 디스플레이 설정(`Win + P`)에서 다중 디스플레이 모드를 **확장(Extend)**으로 설정합니다.
+
+### 4. Android 앱 빌드 및 설치
+`android/` 폴더에서 Gradle로 APK를 빌드하거나, 빌드된 `TabMonitor.apk`를 프로젝트 루트에 위치시킵니다. (첫 실행 시 PC 프로그램이 태블릿에 앱이 없으면 자동으로 `TabMonitor.apk`를 설치합니다.)
+```bash
+cd android
+gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+### 5. 프로그램 실행
+`RUN.bat`을 더블클릭하거나 아래 명령어로 실행합니다:
+```bash
+pythonw app_gui.py
+```
+
+---
+
+## 💡 사용 팁
+
+- **실시간 해상도 변경**: 스트리밍 중에도 PC 또는 태블릿 대시보드에서 `1920 × 1080 (FHD 60p)` 또는 `1280 × 720 (HD 60p)` 버튼을 클릭하면 즉시 전환됩니다.
+- **태블릿에서 대시보드 복귀**: 전체화면 스트리밍 도중 태블릿에서 **뒤로가기(Back)** 제스처를 하면 언제든 태블릿 내 TabMonitor Studio 대시보드 화면으로 돌아올 수 있습니다.
+- **시스템 로그 확인**: 우측 상단의 `📋 로그 창 열기` 버튼을 누르면 별도의 팝업 창에서 연결 상태와 프레임/해상도 전환 로그를 실시간으로 확인할 수 있습니다.
+
+---
+
+## 📄 라이선스
+
+This project is licensed under the MIT License.
