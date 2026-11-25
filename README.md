@@ -134,3 +134,156 @@ cd android
 
 ## 📄 라이선스 (License)
 본 프로젝트는 [MIT License](LICENSE)를 따릅니다.
+
+---
+
+# 2nd project 🕺 Idol Choreography Synchronization Analyzer (`idol-choreo-sync`)
+
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![YOLOv8-Pose](https://img.shields.io/badge/YOLOv8--Pose-Ultralytics-00D2FF)
+![ByteTrack](https://img.shields.io/badge/Multi--Object_Tracking-ByteTrack-38EF7D)
+![OpenCV](https://img.shields.io/badge/OpenCV-Video_Synthesis-5C3EE8?logo=opencv&logoColor=white)
+![Gradio](https://img.shields.io/badge/Web_UI-Gradio-FF7C00)
+
+**아이돌 그룹의 안무 연습 영상(Dance Practice)이나 직캠(Full Cam)을 넣으면, 다중 인물을 실시간 트래킹하여 멤버 간 안무 일치율(칼군무 싱크로율)을 계산하고 원본 동영상(오디오 포함) 위에 실시간 HUD 그래픽을 합성해 주는 AI 프로그램**입니다.
+
+---
+
+## ✨ 주요 기능 (Key Features)
+
+1. **다중 인물 실시간 트래킹 (`YOLOv8-Pose` + `ByteTrack`)**
+   * 화면 속 여러 명의 멤버를 동시에 감지하고 고유 ID(`ID #1`, `ID #2`...)를 부여하여 동선이 이동해도 각 멤버별 평균 안무 정확도를 끝까지 추적합니다.
+   * 배경에 작게 비치는 스태프나 거울 반사 노이즈를 바운딩 박스 면적 비율 필터로 자동 제거합니다.
+
+2. **키·거리 차이에 영향받지 않는 공정한 칼군무 알고리즘**
+   * 멤버마다 신장이 다르거나 앞줄/뒷줄(카메라와의 거리)에 서 있어도 공정하게 비교할 수 있도록 단순 픽셀 좌표가 아닌 아래 두 가지 기하학적 특징을 결합합니다:
+     * **사지 단위 방향 벡터 코사인 유사도 (Limb Unit-Vector Cosine Similarity - 70% 가중치):** 양팔(상완/전완), 양다리(대퇴/하퇴), 어깨선, 몸통 등 11개 신체 부위의 2D 방향 벡터 합의도 측정
+     * **관절 내부 사이각 일치도 (Interior Joint Angle Agreement - 30% 가중치):** 팔꿈치, 어깨, 무릎, 고관절 등 8대 주요 관절의 굽힘 각도 편차 측정
+
+3. **원본 영상 + 오디오 위 실시간 HUD 오버레이 `.MP4` 합성**
+   * **부위별 색상 스켈레톤:** 그룹 평균 동작과 일치하는 부위는 **🟢 네온 그린(`85% 이상`)**, 미세 오차는 **🟡 옐로우(`65~85%`)**, 혼자 각도가 틀어진 팔/다리는 **🔴 코랄 레드(`65% 미만`)**로 즉시 시각화됩니다.
+   * **멤버별 머리 위 배지:** 각 멤버 상단에 `[ID #1 | 94%]` 형태로 개인별 실시간 일치율을 표시합니다.
+   * **상단 싱크로율 대시보드 & 하단 라이브 파형 그래프:** 현재 프레임의 그룹 전체 칼군무 게이지 바와 최근 6초간의 실시간 싱크로율 변화 곡선(Waveform)을 영상 하단에 함께 렌더링하며, `ffmpeg` 연동으로 **원본 음악(오디오 트랙)**을 그대로 유지합니다.
+
+4. **원하는 구간(`시작 시간 ~ 종료 시간`) 지정 분석 & 리포트 차트 생성**
+   * 영상을 업로드하면 전체 길이를 자동 감지하며, 원하는 하이라이트 안무 구간만 지정해 빠르게 합성할 수 있습니다.
+   * 분석 완료 시 **시간대별 칼군무 싱크로율 그래프 & 멤버별 평균 일치율 랭킹 차트(`.PNG`)**와 하이라이트/오차 주의 타임스탬프 리포트를 자동 출력합니다.
+
+---
+
+## 🚀 설치 및 실행 방법 (Quick Start)
+
+### 방법 1. 윈도우 원클릭 실행 (`run_ui.bat` 권장)
+1. 저장소를 다운로드(또는 Clone)한 뒤 폴더 안의 **`run_ui.bat`** 파일을 더블클릭합니다.
+2. 첫 실행 시 자동으로 가상환경(`.venv`) 생성 및 필수 라이브러리를 설치한 후 브라우저(`http://127.0.0.1:7860`)가 열립니다.
+3. 두 번째 실행부터는 설치 과정 없이 2~3초 만에 즉시 실행됩니다.
+
+### 방법 2. 터미널 수동 실행 (Web UI & CLI)
+```bash
+# 1. 가상환경 생성 및 패키지 설치
+python -m venv .venv
+.\.venv\Scripts\pip install -r requirements_portable.txt
+
+# 2-A. 브라우저 웹 UI 모드로 실행 (http://127.0.0.1:7860)
+.\.venv\Scripts\python main.py --ui
+
+# 2-B. CLI 명령어로 특정 구간(예: 15초~45초) 바로 분석 및 합성
+.\.venv\Scripts\python main.py --input dance_practice.mp4 --start 15 --end 45 --output outputs
+```
+
+---
+
+## 📂 폴더 구조 (Project Structure)
+
+```text
+idol-choreo-sync/
+ ├── main.py                     # Gradio 웹 UI 대시보드 & CLI 실행 엔트리포인트
+ ├── analyzer.py                 # YOLOv8-Pose + ByteTrack 칼군무 일치율 계산 및 HUD 영상 합성 엔진
+ ├── demo_test.py                # 4인조 아이돌 안무 시뮬레이션 데모 생성 및 테스트 스크립트
+ ├── run_ui.bat                  # Windows 원클릭 가상환경 세팅 & 웹 UI 자동 실행기
+ ├── requirements_portable.txt   # 핵심 의존성 패키지 목록
+ └── outputs/                    # 합성 완료된 .MP4 동영상 및 리포트 차트(.PNG) 저장 폴더
+```
+
+---
+
+# 3rd project 🚴 AI Bike Fitting Studio (`ai-bike-fitter`)
+
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![YOLOv8-Pose](https://img.shields.io/badge/YOLOv8--Pose-Biomechanics-00D2FF)
+![OpenCV](https://img.shields.io/badge/OpenCV-Marker_Snap_%26_HUD-38EF7D?logo=opencv&logoColor=white)
+![Gradio](https://img.shields.io/badge/Web_UI-Live_Webcam_%26_MP4-FF7C00)
+
+**인도어 트레이너(로라)에 자전거를 고정하고 측면 또는 정면에서 촬영한 동영상(또는 실시간 웹캠)을 입력하면, 라이더의 5대 핵심 피팅 관절 각도를 실시간 추적하여 `Crank At 6 O'Clock` 바이오메카닉 폴리곤과 5단계 색깔별 기준 게이지(`빨-노-초-노-빨`)를 원본 동영상 위에 그대로 합성(`.MP4`)해 주는 AI 자전거 피팅 프로그램**입니다.
+
+---
+
+## ✨ 주요 기능 (Key Features)
+
+1. **`Crank At 6 O'Clock` 블루 폴리곤 & 5단계 색깔별 기준 게이지 오버레이**
+   * 페달링 매 프레임마다 어깨 - 팔꿈치 - 골반 - 무릎 - 발목 - 발끝을 연결하는 **반투명 시안-블루 바이오메카닉 폴리곤 메쉬**를 영상 위에 합성합니다.
+   * 5대 핵심 피팅 각도 카드(**`Shoulder Angle`**, **`Torso Angle`**, **`Hip Angle`**, **`Knee Angle`**, **`Foot / Elbow Angle`**)마다 하단에 **`[🔴 빨강 | 🟡 노랑 | 🟢 초록(권장) | 🟡 노랑 | 🔴 빨강]` 5칸 컬러 게이지 바와 현재 내 각도 위치(흰색 포인터 핀)**를 실시간 표시합니다.
+   * 우측 하단에 페달링에 따른 **실시간 무릎 각도 파형 그래프(Live Waveform)**와 초록색 권장 하사점 밴드(`140°~150°`)를 함께 렌더링합니다.
+
+2. **🎯 관절·클릿 슈즈 7곳 원형 컬러 스티커 정밀 스냅 엔진 (`±0.5°` 프로 피팅샵 수준 정밀도)**
+   * 다이소 원형 컬러 스티커(노란색/빨간색/형광연두, 지름 1.5~2.5cm)를 7곳의 관절 회전축 및 클릿 슈즈 발볼 옆면에 부착하고 촬영하면, AI 관절 위치 주변에서 **실제 스티커의 원 중심점(Sub-pixel Centroid)으로 좌표를 자석처럼 고정(Snap)**합니다.
+   * 검은색 빕숏 착용 시 발생하는 AI 관절 떨림을 제거하고, 일반 AI가 인식하지 못하는 **클릿 슈즈 페달 중심축(발 각도 `Foot Angle` & `3시 KOPS`)**까지 100% 정밀하게 측정합니다.
+   * 웹앱 화면 내에 **7곳 해부학적 부착 위치 도해 이미지(`sticker_placement_guide.png`) 및 상세 가이드 표**가 기본 내장되어 있습니다.
+
+3. **📹 실시간 웹캠 라이브 피팅 & 자동 오버레이 `.MP4` 녹화 (Tab 2)**
+   * **방식 A (브라우저 실시간 스트리밍 녹화):** 웹캠을 켜고 내 자세 위에 입혀진 각도 폴리곤과 컬러 게이지를 실시간 모니터로 확인하면서 `[🔴 실시간 녹화 시작]` ~ `[⏹️ 녹화 종료]`를 누르면 즉시 합성된 `.MP4` 동영상과 리포트가 생성됩니다.
+   * **방식 B (USB/노트북 웹캠 720p 고프레임 직접 녹화):** 브라우저 전송 지연 없이 OpenCV 초저지연 팝업 모니터 창을 띄워 고화질로 자동 녹화 및 `.MP4` 인코딩을 수행합니다.
+
+4. **6시 하사점(`Crank At 6 O'Clock`) & 12시 상사점 자동 포착 + 맞춤형 처방전**
+   * 페달이 가장 아래로 내려간 **6시 하사점(BDC - 안장 높이 핵심 기준)**과 가장 위로 올라온 **12시 상사점(TDC - 고관절 각도 기준)** 프레임을 자동 감지하여 고화질 스냅샷 이미지(`.PNG`)로 캡처합니다.
+   * 선택한 라이딩 스타일(**`로드 엔듀런스`** / **`로드 레이싱`** / **`에어로·TT`** / **`MTB·그래블`**)에 맞춰 안장 높이 조정량(`mm` 단위), 스템 리치, 핸들바 낙차, 정면 11자 무릎 정렬(클릿 웨지) 처방전을 자동 출력합니다.
+
+---
+
+## 📍 오차를 ±0.5°로 줄이는 원형 스티커 7곳 부착 위치
+
+| 번호 | 부착 부위 | 정확한 해부학적 회전축 (뼈 위치) | 측정 효과 |
+| :---: | :--- | :--- | :--- |
+| **①** | **손목 (Wrist)** | 손목 바깥쪽 복숭아뼈 (척골 경상돌기 / 장갑 위) | 팔꿈치 굽힘각(Elbow Angle) 측정 |
+| **②** | **팔꿈치 (Elbow)** | 팔꿈치 바깥쪽 볼록한 뼈 (상완골 외측상과) | 어깨 리치 & 팔꿈치 충격 흡수 각도 |
+| **③** | **어깨 (Shoulder)** | 어깨봉우리 뼈 (견봉, Acromion) 바로 아래 회전 중심 | 상체 숙임각(Torso) & 어깨 리치 각도 |
+| **④★** | **골반 (Hip - 대전자)** | **고관절 대전자 (다리를 들 때 허벅지 옆에서 구르는 큰 뼈)** | 무릎·고관절·상체 각도의 핵심 기준축 |
+| **⑤★** | **무릎 (Knee)** | **대퇴골 외측상과 (무릎 앞 뚜껑뼈가 아닌 옆면 회전축)** | **6시 하사점 무릎 각도(안장 높이) 핵심 기준** |
+| **⑥★** | **발목 (Ankle)** | **바깥쪽 복사뼈 정중앙 (외과, Lateral Malleolus)** | 무릎 각도 및 페달링 앵클링(Ankling) 측정 |
+| **⑦★** | **클릿 슈즈 앞코** | **제5중족골 헤드 (슈즈 보아 다이얼 아래 발볼 페달 중심축)** | **발 각도(Foot Angle) & 3시 KOPS 수직선 정밀 측정** |
+
+---
+
+## 🚀 설치 및 실행 방법 (Quick Start)
+
+### 방법 1. 윈도우 원클릭 실행 (`run_ui.bat` 권장)
+1. 저장소를 다운로드(또는 Clone)한 뒤 폴더 안의 **`run_ui.bat`** 파일을 더블클릭합니다.
+2. 첫 실행 시 자동으로 가상환경(`.venv`) 생성 및 필수 라이브러리를 설치한 후 브라우저(`http://127.0.0.1:7861`)가 열립니다.
+3. 두 번째 실행부터는 설치 과정 없이 2~3초 만에 즉시 실행됩니다.
+
+### 방법 2. 터미널 수동 실행 (Web UI & CLI)
+```bash
+# 1. 가상환경 생성 및 패키지 설치
+python -m venv .venv
+.\.venv\Scripts\pip install -r requirements_portable.txt
+
+# 2-A. 브라우저 웹 UI 모드로 실행 (http://127.0.0.1:7861)
+.\.venv\Scripts\python main.py --ui
+
+# 2-B. CLI 명령어로 동영상 구간(예: 5초~15초) 바로 합성
+.\.venv\Scripts\python main.py --input roller_side.mp4 --start 5 --end 15 --output outputs
+```
+
+---
+
+## 📂 폴더 구조 (Project Structure)
+
+```text
+ai-bike-fitter/
+ ├── main.py                     # Gradio 웹 UI (Tab 1: 동영상 업로드 합성 / Tab 2: 실시간 웹캠 녹화) & CLI
+ ├── bike_fit_analyzer.py        # 바이오메카닉 폴리곤, 5칸 컬러 게이지, 스티커 중심 스냅 & 웹캠 레코더 엔진
+ ├── run_ui.bat                  # Windows 원클릭 가상환경 세팅 & 웹 UI 자동 실행기
+ ├── requirements_portable.txt   # 핵심 의존성 패키지 목록
+ └── outputs/
+      └── sticker_placement_guide.png  # 7곳 원형 스티커 부착 가이드 도해 이미지 및 합성 결과물(.MP4/.PNG) 저장 폴더
+```
